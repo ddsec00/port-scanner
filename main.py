@@ -1,25 +1,81 @@
-import socket
-import sys
+import argparse
+import time
 
-if len(sys.argv) != 2:
-    print("Usage: python3 main.py <target_ip>")
-    sys.exit(1)
+from concurrent.futures import ThreadPoolExecutor
 
-target = sys.argv[1]
+from scanner.scanner import scan_port
+from scanner.scanner import parse_ports
+from scanner.exporter import save_json_report
 
-ports = [22, 80, 443, 21, 25]
 
-print(f"\nScanning {target}...\n")
+def main():
 
-for port in ports:
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(1)
+    parser = argparse.ArgumentParser(
+        description="Simple TCP Port Scanner"
+    )
 
-    result = sock.connect_ex((target, port))
+    parser.add_argument(
+        "--target",
+        required=True,
+        help="Target IP address"
+    )
 
-    if result == 0:
-        print(f"{port}/tcp OPEN")
-    else:
-        print(f"{port}/tcp CLOSED")
+    parser.add_argument(
+        "--ports",
+        help="Comma-separated ports"
+    )
 
-    sock.close()
+    args = parser.parse_args()
+
+    target = args.target
+
+    ports = parse_ports(args.ports)
+
+    print(f"\nScanning target: {target}\n")
+
+    start_time = time.time()
+
+    results = []
+
+    with ThreadPoolExecutor(max_workers=20) as executor:
+
+        futures = []
+
+        for port, service in ports.items():
+
+            future = executor.submit(
+                scan_port,
+                target,
+                port,
+                service
+            )
+
+            futures.append(future)
+
+        for future in futures:
+            results.append(
+                future.result()
+            )
+
+    end_time = time.time()
+
+    duration = end_time - start_time
+
+    save_json_report(
+        target,
+        results
+    )
+
+    print(
+        f"\nScan completed in "
+        f"{duration:.2f} seconds"
+    )
+
+    print(
+        "Results saved to "
+        "reports/scan_results.json"
+    )
+
+
+if __name__ == "__main__":
+    main()
