@@ -1,0 +1,61 @@
+{
+    "target": "127.0.0.1",
+    "scan_duration_seconds": 0.42,
+    "results": [
+        {
+            "port": 22,
+            "service": "SSH",
+            "status": "OPEN"
+        },
+        {
+            "port": 23,
+            "service": "Telnet",
+            "status": "CLOSED"
+        },
+        {
+            "port": 25,
+            "service": "SMTP",
+            "status": "CLOSED"
+        },
+        {
+            "port": 53,
+            "service": "DNS",
+            "status": "FILTERED"
+        },
+        {
+            "port": 80,
+            "service": "HTTP",
+            "status": "CLOSED"
+        },
+        {
+            "port": 110,
+            "service": "POP3",
+            "status": "CLOSED"
+        },
+        {
+            "port": 143,
+            "service": "IMAP",
+            "status": "CLOSED"
+        },
+        {
+            "port": 443,
+            "service": "HTTPS",
+            "status": "FILTERED"
+        },
+        {
+            "port": 3306,
+            "service": "MySQL",
+            "status": "CLOSED"
+        },
+        {
+            "port": 8080,
+            "service": "HTTP-ALT",
+            "status": "CLOSED"
+        }
+    ],
+    "summary": {
+        "open": 1,
+        "closed": 7,
+        "filtered": 2
+    }
+}
