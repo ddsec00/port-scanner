@@ -157,10 +157,7 @@ Do not scan networks or systems you do not own or have explicit permission to te
 
 ## 👨‍💻 Author
 
-Built as a cybersecurity learning project to understand:
-- network scanning
-- socket programming
-- and basic reconnaissance techniques
+@ddsec00
 
 ---
 
