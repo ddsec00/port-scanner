@@ -1,9 +1,15 @@
 import socket
+import sys
 
-target = "127.0.0.1"
+if len(sys.argv) != 2:
+    print("Usage: python3 main.py <target_ip>")
+    sys.exit(1)
+
+target = sys.argv[1]
+
 ports = [22, 80, 443, 21, 25]
 
-print(f"Scanning {target}...\n")
+print(f"\nScanning {target}...\n")
 
 for port in ports:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
